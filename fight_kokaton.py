@@ -1,3 +1,4 @@
+import random
 import sys
 import time
 
@@ -9,8 +10,7 @@ WIDTH = 1600  # ゲームウィンドウの幅
 HEIGHT = 900  # ゲームウィンドウの高さ
 NUM_OF_BOMBS = 5  # 爆弾の数
 
-
-
+damy = 0#  issue対応 空行にしても反映されないのでコード追加してみました（本来は１つ下の空行を消すだけ）
 def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
     """
     オブジェクトが画面内か画面外かを判定し，真理値タプルを返す
