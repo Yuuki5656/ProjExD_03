@@ -144,7 +144,7 @@ class Beam:
         """
         self._rct.move_ip(self._vx, self._vy)
         screen.blit(self._img, self._rct)
-""""
+"""
 class Explosion:
     def __init__(self):
         self._img = pg.transform.rotozoom(pg.image.load(f"ex03/fig/explosion.gif"),0,2.0)
@@ -164,6 +164,14 @@ class Explosion:
             screen.blit(self._img, self._exp_lst[i])
 """
 
+class Score:
+    def __init__(self):
+        self.score = 0
+    def update(self,screen):
+        self.txt = pg.font.Font(None,100).render(str(self.score),True,(0,0,0))
+        screen.blit(self.txt,[100,100])
+
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -173,7 +181,8 @@ def main():
     bird = Bird(3, (900, 400))
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
-    score = 0
+    #score = 0
+    score2 = Score()
     font = pygame.font.Font(None,100)
 
     tmr = 0
@@ -186,7 +195,7 @@ def main():
 
         tmr += 1
         screen.blit(bg_img, [0, 0])
-        
+
         
         for bomb in bombs:
             bomb.update(screen)
@@ -206,11 +215,12 @@ def main():
                 if beam._rct.colliderect(bomb._rct):
                     beam = None
                     del bombs[i]
-                    score += 1
+                    score2.score += 1
                     # Explosion()
                     bird.change_img(6, screen)
                     break
-        screen.blit(font.render(str(score),True,(0,0,0)),(100,100))
+        score2.update(screen)
+        #screen.blit(font.render(str(score),True,(0,0,0)),(100,100))
         pg.display.update()
         clock.tick(1000)
 
