@@ -2,12 +2,14 @@ import random
 import sys
 import time
 
+import pygame
 import pygame as pg
 
 
 WIDTH = 1600  # ゲームウィンドウの幅
 HEIGHT = 900  # ゲームウィンドウの高さ
 NUM_OF_BOMBS = 5  # 爆弾の数
+
 
 
 def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
@@ -142,7 +144,25 @@ class Beam:
         """
         self._rct.move_ip(self._vx, self._vy)
         screen.blit(self._img, self._rct)
-
+""""
+class Explosion:
+    def __init__(self):
+        self._img = pg.transform.rotozoom(pg.image.load(f"ex03/fig/explosion.gif"),0,2.0)
+        self._exp_lst = [
+            pg.transform.flip(self._img,False,False),
+            pg.transform.flip(self._img,True,False),
+            pg.transform.flip(self._img,False,True),
+            pg.transform.flip(self._img,True,True)
+        ]
+        self._rct = self._img.get_rect()
+        x = Bomb
+        self._rct.center = x._rct_center
+        self._life = random.randint(1,3)
+    
+    def update(self, screen):
+        for i in range(len(self._exp_lst)):
+            screen.blit(self._img, self._exp_lst[i])
+"""
 
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
@@ -153,6 +173,8 @@ def main():
     bird = Bird(3, (900, 400))
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
+    score = 0
+    font = pygame.font.Font(None,100)
 
     tmr = 0
     while True:
@@ -184,9 +206,11 @@ def main():
                 if beam._rct.colliderect(bomb._rct):
                     beam = None
                     del bombs[i]
+                    score += 1
+                    # Explosion()
                     bird.change_img(6, screen)
                     break
-
+        screen.blit(font.render(str(score),True,(0,0,0)),(100,100))
         pg.display.update()
         clock.tick(1000)
 
